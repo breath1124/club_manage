@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zucc.edu.club.mapper.StuActivityMapper">
+
+    <delete id="studentExitActivity" parameterType="java.lang.Integer">
+        delete from stu_activity
+        where stu_id = #{stuId,jdbcType=INTEGER}
+        and activity_id = #{activityId,jdbcType=INTEGER}
+    </delete>
+
+    <select id="searchJoinStu" resultType="cn.zucc.edu.club.entity.Student">
+        select student.stu_id, student.stu_num, student.stu_name, student.stu_sex, student.stu_tel, student.stu_age
+        from student, stu_activity
+        where stu_activity.activity_id = #{activityId}
+        and student.stu_id = stu_activity.stu_id
+    </select>
+
+</mapper>
