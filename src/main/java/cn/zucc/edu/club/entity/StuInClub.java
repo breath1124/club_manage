@@ -28,4 +28,14 @@ public class StuInClub implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Date joinTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+    private Date applyTime;
+
+    private Integer stuIsPresident;
+
+    private Integer stuId;
+
+    private String status;
+
+
 }

@@ -40,4 +40,9 @@ public class StuClubServiceImpl extends ServiceImpl<StuClubMapper, StuClub> impl
         return stuClubMapper.searchApplyStuClub(clubId);
     }
 
+    @Override
+    public StuClub getOneStuInClub(int clubId, int stuId) {
+        return stuClubMapper.getOneStuInClub(clubId, stuId);
+    }
+
 }

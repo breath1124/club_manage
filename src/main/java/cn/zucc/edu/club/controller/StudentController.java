@@ -5,6 +5,7 @@ import cn.zucc.edu.club.entity.Student;
 import cn.zucc.edu.club.service.StudentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +54,10 @@ public class StudentController {
 
     @ApiOperation(value = "列出所有学生")
     @GetMapping("/listAll")
-    public List<Student> searchAllStudent() {
-        List<Student> students = studentService.list();
+    public PageInfo<Student> searchAllStudent(@RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                          @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+//        List<Student> students = studentService.list();
+        PageInfo<Student> students = studentService.findStuByPage(pageNum, pageSize);
         return students;
     }
 

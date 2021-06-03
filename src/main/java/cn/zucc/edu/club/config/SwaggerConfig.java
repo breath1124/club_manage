@@ -27,10 +27,10 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title(" RESTful APIs")
-                .description("RESTful APIs")
+                .title("Club APIs")
+                .description("Club APIs")
                 .termsOfServiceUrl("http://localhost:8080/")
-                .contact("long")
+                .contact("tengfei")
                 .version("1.0")
                 .build();
     }

@@ -74,6 +74,7 @@ public class ClubController {
         return clubs;
     }
 
+
     @ApiOperation(value = "根据类型查询社团")
     @GetMapping("/listType")
     public List<Club> searchTypeClub(@RequestParam("clubType") String type) {

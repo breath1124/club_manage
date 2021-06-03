@@ -27,4 +27,6 @@ public interface StuClubMapper extends BaseMapper<StuClub> {
 
     List<StuClub> searchApplyStuClub(int clubId);
 
+    StuClub getOneStuInClub(int clubId, int stuId);
+
 }

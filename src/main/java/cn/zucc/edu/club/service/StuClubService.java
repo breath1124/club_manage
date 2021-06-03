@@ -23,4 +23,6 @@ public interface StuClubService extends IService<StuClub> {
 
     List<StuClub> searchApplyStu(int clubId);
 
+    StuClub getOneStuInClub(int clubId, int stuId);
+
 }
