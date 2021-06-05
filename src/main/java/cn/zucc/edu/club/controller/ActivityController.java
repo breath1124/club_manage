@@ -9,6 +9,7 @@ import cn.zucc.edu.club.service.ActivityService;
 import cn.zucc.edu.club.service.AdminService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,17 +55,20 @@ public class ActivityController {
 
     @ApiOperation(value = "列出所有活动")
     @GetMapping("/listAll")
-    public List<Activity> searchAllActivity() {
-        QueryWrapper<Activity> qw = new QueryWrapper<Activity>().not(item ->item.eq("activity_stop",1));
-        List<Activity> activities = activityService.list(qw);
+    public PageInfo<Activity> searchAllActivity(@RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                                @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+        PageInfo<Activity> activities = activityService.findStuByPage(pageNum, pageSize);
         return activities;
     }
 
     @ApiOperation(value = "根据名字模糊查询活动")
     @GetMapping("listVague")
-    public List<Activity> searchVagueActivity(@RequestParam("activityName") String name) {
-        LambdaQueryWrapper<Activity> qw = new QueryWrapper<Activity>().lambda().like(Activity::getActivityName, name);
-        return activityService.list(qw);
+    public PageInfo<Activity> searchVagueActivity(@RequestParam("activityName") String name,
+                                                  @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                                  @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+//        LambdaQueryWrapper<Activity> qw = new QueryWrapper<Activity>().lambda().like(Activity::getActivityName, name);
+        PageInfo<Activity> activities = activityService.findStuByPageVague(name, pageNum, pageSize);
+        return activities;
     }
 
     @ApiOperation(value = "查看某活动的详细信息")

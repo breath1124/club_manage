@@ -30,5 +30,6 @@ public class Admin implements Serializable {
 
     private String adminPwd;
 
+    private String adminName;
 
 }

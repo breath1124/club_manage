@@ -5,6 +5,7 @@ import cn.zucc.edu.club.entity.Admin;
 import cn.zucc.edu.club.service.AdminService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,17 +53,20 @@ public class AdminController {
 
     @ApiOperation(value = "列出所有管理员")
     @GetMapping("/listAll")
-    public List<Admin> searchAllAdmin() {
-        List<Admin> admins = adminService.list();
+    public PageInfo<Admin> searchAllAdmin(@RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                          @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+        PageInfo<Admin> admins = adminService.findStuByPage(pageNum, pageSize);
         return admins;
     }
 
 
     @ApiOperation(value = "模糊查询管理员")
     @GetMapping("/listVague")
-    public List<Admin> searchVagueAdmin(@RequestParam("adminAccount") String account) {
-        LambdaQueryWrapper<Admin> qw = new QueryWrapper<Admin>().lambda().like(Admin::getAdminAccount, account);
-        return adminService.list(qw);
+    public PageInfo<Admin> searchVagueAdmin(@RequestParam("adminAccount") String account,
+                                        @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                        @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+        PageInfo<Admin> admins = adminService.findStuByPageVague(account, pageNum, pageSize);
+        return admins;
     }
 
     @ApiOperation(value = "管理员登录")

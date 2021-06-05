@@ -16,4 +16,6 @@ public interface StudentService extends IService<Student> {
 
     PageInfo<Student> findStuByPage(int pageNum, int pageSize);
 
+    PageInfo<Student> findStuByPageVague(String name, int pageNum, int pageSize);
+
 }

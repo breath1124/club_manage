@@ -2,6 +2,7 @@ package cn.zucc.edu.club.service;
 
 import cn.zucc.edu.club.entity.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
 
 /**
  * <p>
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface AdminService extends IService<Admin> {
 
+    PageInfo<Admin> findStuByPage(int pageNum, int pageSize);
+
+    PageInfo<Admin> findStuByPageVague(String name, int pageNum, int pageSize);
 }

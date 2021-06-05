@@ -50,5 +50,7 @@ public class Activity implements Serializable {
 
     private Integer activityStop;
 
+    private String clubName;
+
 
 }

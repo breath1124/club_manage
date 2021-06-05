@@ -38,5 +38,7 @@ public class Notice implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Date noticeTime;
 
+    private String adminName;
+
 
 }

@@ -67,10 +67,12 @@ public class StuClubController {
 
     @ApiOperation(value = "列出某社团内的所有学生")
     @GetMapping("/listAll")
-    public List<StuInClub> searchAllStudentInClub(@RequestParam("clubId") int clubId) {
+    public PageInfo<StuInClub> searchAllStudentInClub(@RequestParam("clubId") int clubId,
+                                                  @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                                  @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
 
 //        PageHelper.startPage(start, size, "stu_club.stu_id asc");
-        List<StuInClub> stuInClubs = stuClubService.searchAllStuInClub(clubId);
+        PageInfo<StuInClub> stuInClubs = stuClubService.findStuByPage(clubId, pageNum, pageSize);
 //        PageInfo<StuInClub> page = new PageInfo<>(stuInClubs);
 //        System.out.println("11111111111111111"+page.getList());
 //        System.out.println(page);
@@ -80,9 +82,11 @@ public class StuClubController {
 
     @ApiOperation(value = "列出申请加入某社团但还未被同意的所有学生")
     @GetMapping("/listApply")
-    public List<StuClub> searchApplyStudentInClub(@RequestParam("clubId") int clubId) {
+    public PageInfo<StuClub> searchApplyStudentInClub(@RequestParam("clubId") int clubId,
+                                                  @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                                  @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
 //        LambdaQueryWrapper<S>
-        List<StuClub> students = stuClubService.searchApplyStu(clubId);
+        PageInfo<StuClub> students = stuClubService.findStuByPageVague(clubId, pageNum, pageSize);
         return students;
     }
 

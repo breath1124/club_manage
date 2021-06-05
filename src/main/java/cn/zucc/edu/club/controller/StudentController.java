@@ -63,9 +63,11 @@ public class StudentController {
 
     @ApiOperation(value = "模糊查询学生")
     @GetMapping("/listVague")
-    public List<Student> searchVagueStudent(@RequestParam("stuName") String name) {
-        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().like(Student::getStuName, name);
-        return studentService.list(qw);
+    public PageInfo<Student> searchVagueStudent(@RequestParam("stuName") String name,
+                                            @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+        PageInfo<Student> students = studentService.findStuByPageVague(name, pageNum, pageSize);
+        return students;
     }
 
     @ApiOperation(value = "学生登录")

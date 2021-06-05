@@ -6,6 +6,7 @@ import cn.zucc.edu.club.entity.Student;
 import cn.zucc.edu.club.service.ActivityService;
 import cn.zucc.edu.club.service.StuActivityService;
 import cn.zucc.edu.club.service.StudentService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,10 @@ public class StuActivityController {
 
     @ApiOperation(value = "查看参加活动的学生信息")
     @GetMapping("/listAll")
-    public List<Student> searchJoinStu(@RequestParam("activityId") int activityId) {
-        List<Student> students = stuActivityService.searchJoinStu(activityId);
+    public PageInfo<Student> searchJoinStu(@RequestParam("activityId") int activityId,
+                                           @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                           @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+        PageInfo<Student> students = stuActivityService.findStuByPage(activityId, pageNum, pageSize);
         return students;
     }
 

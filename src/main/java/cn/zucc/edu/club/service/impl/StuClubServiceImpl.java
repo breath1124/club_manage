@@ -4,8 +4,13 @@ import cn.zucc.edu.club.entity.StuClub;
 import cn.zucc.edu.club.entity.StuInClub;
 import cn.zucc.edu.club.entity.Student;
 import cn.zucc.edu.club.mapper.StuClubMapper;
+import cn.zucc.edu.club.service.StuActivityService;
 import cn.zucc.edu.club.service.StuClubService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +30,9 @@ public class StuClubServiceImpl extends ServiceImpl<StuClubMapper, StuClub> impl
     @Autowired
     StuClubMapper stuClubMapper;
 
+    @Autowired
+    private StuClubService stuClubService;
+
     @Override
     public int exitClub(int clubId, int stuId) {
         return stuClubMapper.stuExitClub(clubId, stuId);
@@ -43,6 +51,20 @@ public class StuClubServiceImpl extends ServiceImpl<StuClubMapper, StuClub> impl
     @Override
     public StuClub getOneStuInClub(int clubId, int stuId) {
         return stuClubMapper.getOneStuInClub(clubId, stuId);
+    }
+
+    @Override
+    public PageInfo<StuInClub> findStuByPage(int clubId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<StuInClub> stuInClubs = stuClubService.searchAllStuInClub(clubId);
+        return new PageInfo<>(stuInClubs);
+    }
+
+    @Override
+    public PageInfo<StuClub> findStuByPageVague(int clubId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<StuClub> students = stuClubService.searchApplyStu(clubId);
+        return new PageInfo<>(students);
     }
 
 }
