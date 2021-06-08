@@ -33,8 +33,10 @@ public class StudentController {
     @PostMapping("/add")
     public boolean addStudent(@RequestBody Student student) {
         LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().eq(Student::getStuNum, student.getStuNum());
-        if(studentService.list(qw).isEmpty())
+        if(studentService.list(qw).isEmpty()) {
+            student.setStuState(0);
             return studentService.save(student);
+        }
         else
             throw new RuntimeException();
     }
@@ -42,7 +44,9 @@ public class StudentController {
     @ApiOperation(value = "删除学生")
     @PostMapping("/delete")
     public boolean delStudent(@RequestParam("stuId") int id) {
-        return studentService.removeById(id);
+        Student student = findOneStudent(id);
+        student.setStuState(1);
+        return studentService.saveOrUpdate(student);
     }
 
     @ApiOperation(value = "修改学生")
@@ -79,6 +83,12 @@ public class StudentController {
             return student;
         else
             return null;
+    }
+
+    @ApiOperation(value = "根据id查找学生")
+    @GetMapping("/findStudentById")
+    public Student findOneStudent(@RequestParam("stuId") int id) {
+        return studentService.getById(id);
     }
 
 }

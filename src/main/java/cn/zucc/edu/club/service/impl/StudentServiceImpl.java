@@ -31,14 +31,16 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public PageInfo<Student> findStuByPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Student> students = studentService.list();
+        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().ne(Student::getStuState, 1);
+        List<Student> students = studentService.list(qw);
         return new PageInfo<>(students);
     }
 
     @Override
     public PageInfo<Student> findStuByPageVague(String name, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().like(Student::getStuName, name);
+        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().and(i -> i.like(Student::getStuName, name).ne(Student::getStuState, 1));
+//        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().like(Student::getStuName, name);
         List<Student> students = studentService.list(qw);
         return new PageInfo<>(students);
     }

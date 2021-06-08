@@ -64,9 +64,9 @@ public class ClubController {
 
     @ApiOperation(value = "列出所有社团")
     @GetMapping("/listAll")
-    public PageInfo<Club> searchAllClub(@RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
-                                        @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
-        PageInfo<Club> clubs = clubService.findStuByPage(pageNum, pageSize);
+    public List<Club> searchAllClub() {
+        LambdaQueryWrapper<Club> qw = new QueryWrapper<Club>().lambda().ne(Club::getClubIsStop, 1);
+        List<Club> clubs = clubService.list(qw);
         return clubs;
     }
 

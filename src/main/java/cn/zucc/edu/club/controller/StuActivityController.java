@@ -48,7 +48,7 @@ public class StuActivityController {
         return stuActivityService.studentExitActivity(stuId, activityId);
     }
 
-    @ApiOperation(value = "查看参加活动的学生信息")
+    @ApiOperation(value = "列出参加此活动的所有学生信息")
     @GetMapping("/listAll")
     public PageInfo<Student> searchJoinStu(@RequestParam("activityId") int activityId,
                                            @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,

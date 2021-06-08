@@ -40,5 +40,7 @@ public class Student implements Serializable {
 
     private String stuPwd;
 
+    private Integer stuState;
+
 
 }

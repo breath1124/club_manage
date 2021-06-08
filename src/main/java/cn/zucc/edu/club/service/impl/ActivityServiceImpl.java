@@ -39,7 +39,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
     @Override
     public PageInfo<Activity> findStuByPageVague(String name, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        LambdaQueryWrapper<Activity> qw = new QueryWrapper<Activity>().lambda().like(Activity::getActivityName, name);
+        LambdaQueryWrapper<Activity> qw = new QueryWrapper<Activity>().lambda().like(Activity::getActivityName, name).ne(Activity::getActivityStop, 1);
         List<Activity> activities = activityService.list(qw);
         return new PageInfo<>(activities);
     }

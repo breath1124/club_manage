@@ -13,6 +13,7 @@
         from student, stu_activity
         where stu_activity.activity_id = #{activityId}
         and student.stu_id = stu_activity.stu_id
+        and student.stu_state != 1
     </select>
 
 </mapper>

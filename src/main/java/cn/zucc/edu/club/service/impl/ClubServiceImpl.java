@@ -65,7 +65,7 @@ public class ClubServiceImpl extends ServiceImpl<ClubMapper, Club> implements Cl
     @Override
     public PageInfo<Club> findStuByPageTypeAndNameVague(String type, String name, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        LambdaQueryWrapper<Club> qw = new QueryWrapper<Club>().lambda().eq(Club::getClubType, type).like(Club::getClubName, name);
+        LambdaQueryWrapper<Club> qw = new QueryWrapper<Club>().lambda().and(i -> i.like(Club::getClubType, type).like(Club::getClubName, name).ne(Club::getClubIsStop, 1));
         List<Club> clubs = clubService.list(qw);
         for(int i = 0; i < clubs.size(); i++) {
             if(clubs.get(i).getClubIsStop() == 1) {
