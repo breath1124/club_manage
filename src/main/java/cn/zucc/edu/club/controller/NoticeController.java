@@ -72,5 +72,11 @@ public class NoticeController {
         return notices;
     }
 
+    @ApiOperation(value = "根据ID查询公告")
+    @GetMapping("/listOne")
+    public Notice searchOneClub(@RequestParam("clubId") int id) {
+        return noticeService.getById(id);
+    }
+
 }
 

@@ -36,6 +36,7 @@ public class ActivityController {
     @ApiOperation(value = "添加活动")
     @PostMapping("/add")
     public boolean addActivity(@RequestBody Activity activity) {
+        activity.setActivityStop(0);
         return activityService.save(activity);
     }
 
@@ -71,7 +72,7 @@ public class ActivityController {
         return activities;
     }
 
-    @ApiOperation(value = "查看某活动的详细信息")
+    @ApiOperation(value = "根据ID查询活动")
     @GetMapping("/listOne")
     public Activity searchOneActivity(@RequestParam("activityId") int activityId) {
         return activityService.getById(activityId);

@@ -2,7 +2,9 @@ package cn.zucc.edu.club.controller;
 
 
 import cn.zucc.edu.club.entity.Club;
+import cn.zucc.edu.club.entity.Student;
 import cn.zucc.edu.club.service.ClubService;
+import cn.zucc.edu.club.service.StudentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
@@ -33,6 +35,9 @@ public class ClubController {
     @Autowired
     private ClubService clubService;
 
+    @Autowired
+    private StudentService studentService;
+
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 
     @ApiOperation(value = "新增社团")
@@ -42,6 +47,10 @@ public class ClubController {
         if(clubService.list(qw).isEmpty()) {
             String initTime = df.format(new Date());
             club.setClubInit(df.parse(initTime));
+            LambdaQueryWrapper<Student> queryWrapper = new QueryWrapper<Student>().lambda().eq(Student::getStuName, club.getClubPresident());
+            Student student = studentService.getOne(queryWrapper);
+            student.setStuIsPresident(club.getClubName());
+            studentService.saveOrUpdate(student);
             return clubService.save(club);
         }
         else

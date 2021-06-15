@@ -36,7 +36,7 @@ public class Student implements Serializable {
 
     private String stuTel;
 
-    private Integer stuIsPresident;
+    private String stuIsPresident;
 
     private String stuPwd;
 

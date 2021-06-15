@@ -122,7 +122,6 @@ public class StuClubController {
         StuClub stuClub = stuClubService.getOneStuInClub(clubId, stuInClub.getStuId());
         if(stuInClub != null) {
             Student stu = studentService.getById(stuInClub.getStuId());
-            stu.setStuIsPresident(0);
             stuClub.setStatus("普通成员");
             studentService.saveOrUpdate(stu);
             stuClubService.saveOrUpdate(stuClub);
@@ -130,7 +129,7 @@ public class StuClubController {
 
         Club club = clubService.getById(clubId);
         club.setClubPresident(student.getStuName());
-        student.setStuIsPresident(clubId);
+        student.setStuIsPresident(club.getClubName());
         clubService.saveOrUpdate(club);
         studentService.saveOrUpdate(student);
         StuClub stuClub1 = new StuClub();
@@ -151,7 +150,7 @@ public class StuClubController {
         StuClub stuClub1 = stuClubService.getOneStuInClub(clubId, stuClub.getStuId());
         if(stuInClub1 != null) {
             Student stu = studentService.getById(stuInClub1.getStuId());
-            stu.setStuIsPresident(0);
+//            stu.setStuIsPresident(0);
             stuClub1.setStatus("普通成员");
             studentService.saveOrUpdate(stu);
         }
@@ -159,7 +158,7 @@ public class StuClubController {
         Student student = studentService.getById(stuClub.getStuId());
         Club club = clubService.getById(clubId);
         club.setClubPresident(student.getStuName());
-        student.setStuIsPresident(clubId);
+        student.setStuIsPresident(club.getClubName());
         stuClub.setStatus("社长");
         clubService.saveOrUpdate(club);
         stuClubService.saveOrUpdate(stuClub);
@@ -186,7 +185,7 @@ public class StuClubController {
     public boolean deletePersident(@RequestParam int clubId, @RequestBody StuClub stuClub) {
 
         Student student = studentService.getById(stuClub.getStuId());
-        student.setStuIsPresident(0);
+        student.setStuIsPresident(null);
         stuClub.setStatus("普通成员");
         Club club = clubService.getById(clubId);
         club.setClubPresident(null);
