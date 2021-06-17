@@ -28,7 +28,7 @@ public class StuClub implements Serializable {
 
     private Integer clubId;
 
-    private Integer stuId;
+    private Long stuId;
 
     private String applyContent;
 

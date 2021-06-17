@@ -28,6 +28,15 @@ public class ClubServiceImpl extends ServiceImpl<ClubMapper, Club> implements Cl
     @Autowired
     private ClubService clubService;
 
+    @Autowired
+    private ClubMapper clubMapper;
+
+    @Override
+    public int getClubMemberSum(Club club) {
+        return clubMapper.getClubMemberSum(club);
+    }
+
+
     @Override
     public PageInfo<Club> findStuByPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);

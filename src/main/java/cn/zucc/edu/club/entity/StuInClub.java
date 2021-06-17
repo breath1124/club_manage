@@ -33,7 +33,7 @@ public class StuInClub implements Serializable {
 
     private Integer stuIsPresident;
 
-    private Integer stuId;
+    private Long stuId;
 
     private String status;
 

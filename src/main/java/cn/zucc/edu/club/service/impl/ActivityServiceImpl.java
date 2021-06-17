@@ -30,7 +30,8 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
 
     @Override
     public PageInfo<Activity> findStuByPage(int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+        String orderBy = "activity_id desc";
+        PageHelper.startPage(pageNum, pageSize, orderBy);
         QueryWrapper<Activity> qw = new QueryWrapper<Activity>().not(item ->item.eq("activity_stop",1));
         List<Activity> activities = activityService.list(qw);
         return new PageInfo<>(activities);
@@ -38,7 +39,8 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
 
     @Override
     public PageInfo<Activity> findStuByPageVague(String name, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+        String orderBy = "activity_id desc";
+        PageHelper.startPage(pageNum, pageSize, orderBy);
         LambdaQueryWrapper<Activity> qw = new QueryWrapper<Activity>().lambda().like(Activity::getActivityName, name).ne(Activity::getActivityStop, 1);
         List<Activity> activities = activityService.list(qw);
         return new PageInfo<>(activities);

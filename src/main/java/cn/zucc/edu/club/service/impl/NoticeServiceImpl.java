@@ -30,14 +30,16 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
 
     @Override
     public PageInfo<Notice> findStuByPage(int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+        String orderBy = "notice_id desc";
+        PageHelper.startPage(pageNum, pageSize, orderBy);
         List<Notice> notices = noticeService.list();
         return new PageInfo<>(notices);
     }
 
     @Override
     public PageInfo<Notice> findStuByPageVague(String content, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+        String orderBy = "notice_id desc";
+        PageHelper.startPage(pageNum, pageSize, orderBy);
         LambdaQueryWrapper<Notice> qw = new QueryWrapper<Notice>().lambda().like(Notice::getNoticeContent, content);
         List<Notice> notices = noticeService.list(qw);
         return new PageInfo<>(notices);

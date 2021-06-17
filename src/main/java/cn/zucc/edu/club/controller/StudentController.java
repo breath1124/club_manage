@@ -1,16 +1,22 @@
 package cn.zucc.edu.club.controller;
 
 
+import cn.zucc.edu.club.entity.Result;
 import cn.zucc.edu.club.entity.Student;
 import cn.zucc.edu.club.service.StudentService;
+import cn.zucc.edu.club.service.impl.UserDetailServiceImpl;
+import cn.zucc.edu.club.util.JwtTokenUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
+import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -23,11 +29,21 @@ import java.util.List;
  */
 @Api(tags = "学生接口")
 @RestController
+@CrossOrigin
 @RequestMapping("/student")
 public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private JwtTokenUtils jwtTokenUtils;
+
+    @Autowired
+    private UserDetailServiceImpl userDetailService;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @ApiOperation(value = "注册学生")
     @PostMapping("/add")
@@ -35,6 +51,7 @@ public class StudentController {
         LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().eq(Student::getStuNum, student.getStuNum());
         if(studentService.list(qw).isEmpty()) {
             student.setStuState(0);
+            student.setStuPwd(new BCryptPasswordEncoder().encode(student.getStuPwd()));
             return studentService.save(student);
         }
         else
@@ -74,22 +91,55 @@ public class StudentController {
         return students;
     }
 
+//    @ApiOperation(value = "学生登录")
+//    @GetMapping("/login")
+//    public Student loginStudent(@RequestParam("stuNum") String num, @RequestParam("stuPwd") String pwd) {
+//        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().eq(Student::getStuNum, num);
+//        Student student = studentService.getOne(qw);
+//        if(pwd.equals(student.getStuPwd())) {
+////            student.getToken();
+//            return student;
+//        }
+//        else
+//            return null;
+//    }
+
     @ApiOperation(value = "学生登录")
-    @GetMapping("/login")
-    public Student loginStudent(@RequestParam("stuNum") String num, @RequestParam("stuPwd") String pwd) {
+    @PostMapping("/login")
+    public Result loginStudent(@RequestParam("stuNum") String num, @RequestParam("stuPwd") String pwd) {
         LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().eq(Student::getStuNum, num);
         Student student = studentService.getOne(qw);
-        if(pwd.equals(student.getStuPwd()))
-            return student;
+        if(bCryptPasswordEncoder.matches(pwd, student.getStuPwd())) {
+            String token = jwtTokenUtils.generateToken(student.getStuNum());
+//            student.getToken();
+            System.out.println(token);
+            Claims clams = jwtTokenUtils.getClaimsByToken(token);
+            String x = jwtTokenUtils.getUsername(token);
+            String y = jwtTokenUtils.getUserRole(token);
+            System.out.println(x);
+            System.out.println(y);
+            System.out.println(clams);
+
+            return Result.success(student);
+        }
         else
-            return null;
+            return Result.fail("fail");
     }
+
+
 
     @ApiOperation(value = "根据id查找学生")
     @GetMapping("/findStudentById")
     public Student findOneStudent(@RequestParam("stuId") int id) {
         return studentService.getById(id);
     }
+
+
+//    @GetMapping("/checkToken")
+//    public Boolean checkToken(HttpServletRequest request) {
+//        String token = request.getHeader("token");
+//
+//    }
 
 }
 

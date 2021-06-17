@@ -21,4 +21,6 @@ public interface StuActivityMapper extends BaseMapper<StuActivity> {
     int studentExitActivity(int stuId, int activityId);
 
     List<Student> searchJoinStu(int activityId);
+
+
 }

@@ -23,4 +23,6 @@ public interface ClubMapper extends BaseMapper<Club> {
 
     List<Club> selectType();
 
+    int getClubMemberSum(Club club);
+
 }

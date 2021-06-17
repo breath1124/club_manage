@@ -49,7 +49,7 @@ public class StuClubServiceImpl extends ServiceImpl<StuClubMapper, StuClub> impl
     }
 
     @Override
-    public StuClub getOneStuInClub(int clubId, int stuId) {
+    public StuClub getOneStuInClub(int clubId, Long stuId) {
         return stuClubMapper.getOneStuInClub(clubId, stuId);
     }
 

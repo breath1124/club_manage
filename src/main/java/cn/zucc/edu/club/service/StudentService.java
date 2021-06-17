@@ -14,6 +14,10 @@ import com.github.pagehelper.PageInfo;
  */
 public interface StudentService extends IService<Student> {
 
+//    String getUserAuthorityInfo(Long userId);
+
+    Student getByStuNum(String stuNum);
+
     PageInfo<Student> findStuByPage(int pageNum, int pageSize);
 
     PageInfo<Student> findStuByPageVague(String name, int pageNum, int pageSize);

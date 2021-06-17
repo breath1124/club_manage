@@ -15,6 +15,8 @@ import com.github.pagehelper.PageInfo;
  */
 public interface ClubService extends IService<Club> {
 
+    int getClubMemberSum(Club club);
+
     PageInfo<Club> findStuByPage(int pageNum, int pageSize);
 
     PageInfo<Club> findStuByPageVague(String name, int pageNum, int pageSize);

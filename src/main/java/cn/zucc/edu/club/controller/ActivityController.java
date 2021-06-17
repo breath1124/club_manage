@@ -63,7 +63,7 @@ public class ActivityController {
     }
 
     @ApiOperation(value = "根据名字模糊查询活动")
-    @GetMapping("listVague")
+    @GetMapping("/listVague")
     public PageInfo<Activity> searchVagueActivity(@RequestParam("activityName") String name,
                                                   @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
                                                   @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {

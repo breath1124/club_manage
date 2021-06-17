@@ -123,6 +123,7 @@ public class StuClubController {
         if(stuInClub != null) {
             Student stu = studentService.getById(stuInClub.getStuId());
             stuClub.setStatus("普通成员");
+            stu.setRole(3);
             studentService.saveOrUpdate(stu);
             stuClubService.saveOrUpdate(stuClub);
         }
@@ -130,6 +131,7 @@ public class StuClubController {
         Club club = clubService.getById(clubId);
         club.setClubPresident(student.getStuName());
         student.setStuIsPresident(club.getClubName());
+        student.setRole(2);
         clubService.saveOrUpdate(club);
         studentService.saveOrUpdate(student);
         StuClub stuClub1 = new StuClub();
@@ -152,6 +154,7 @@ public class StuClubController {
             Student stu = studentService.getById(stuInClub1.getStuId());
 //            stu.setStuIsPresident(0);
             stuClub1.setStatus("普通成员");
+            stu.setRole(3);
             studentService.saveOrUpdate(stu);
         }
 
@@ -160,6 +163,7 @@ public class StuClubController {
         club.setClubPresident(student.getStuName());
         student.setStuIsPresident(club.getClubName());
         stuClub.setStatus("社长");
+        student.setRole(2);
         clubService.saveOrUpdate(club);
         stuClubService.saveOrUpdate(stuClub);
         return studentService.saveOrUpdate(student);
@@ -189,6 +193,7 @@ public class StuClubController {
         stuClub.setStatus("普通成员");
         Club club = clubService.getById(clubId);
         club.setClubPresident(null);
+        student.setRole(2);
         clubService.saveOrUpdate(club);
         studentService.saveOrUpdate(student);
         return stuClubService.saveOrUpdate(stuClub);

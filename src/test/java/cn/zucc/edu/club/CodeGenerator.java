@@ -70,8 +70,9 @@ public class CodeGenerator {
                 "notice",
                 "stu_activity",
                 "stu_club",
-                "student"
-
+                "student",
+                "role",
+                "user_role"
         );  // 设置要生成代码的表
         //strategy.setTablePrefix("t_");  //去掉表前缀
 

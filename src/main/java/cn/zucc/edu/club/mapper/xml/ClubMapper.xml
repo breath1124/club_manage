@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.zucc.edu.club.mapper.ClubMapper">
 
+    <select id="getClubMemberSum" resultType="java.lang.Integer">
+        select distinct count(*)
+        from stu_club, club, student
+        where club.club_id = #{clubId,jdbcType=INTEGER} and student.stu_state = 0 and student.role != 1 and club.club_is_stop != 1
+        and student.stu_id = stu_club.stu_id and club.club_id = stu_club.club_id
+    </select>
+
 </mapper>
