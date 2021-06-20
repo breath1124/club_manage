@@ -86,7 +86,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public PageInfo<Student> findStuByPageVague(String name, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
 
-        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().and(i -> i.like(Student::getStuNum, name).and(j -> j.eq(Student::getRole, 3)).ne(Student::getStuState, 1));
+        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().and(i -> i.like(Student::getStuNum, name)
+                .and(j -> j.eq(Student::getRole, 3).or(k -> k.eq(Student::getRole, 2)))
+                .ne(Student::getStuState, 1));
 
 //        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().and(i -> i.like(Student::getStuName, name).ne(Student::getStuState, 1));
 //        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().like(Student::getStuName, name);

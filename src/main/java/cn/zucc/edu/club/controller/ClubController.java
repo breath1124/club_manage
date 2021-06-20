@@ -2,6 +2,7 @@ package cn.zucc.edu.club.controller;
 
 
 import cn.zucc.edu.club.entity.Club;
+import cn.zucc.edu.club.entity.Notice;
 import cn.zucc.edu.club.entity.Student;
 import cn.zucc.edu.club.service.ClubService;
 import cn.zucc.edu.club.service.StudentService;
@@ -68,7 +69,26 @@ public class ClubController {
     @ApiOperation(value = "修改社团")
     @PostMapping("/modify")
     public boolean modify(@RequestBody Club club) {
-        return clubService.saveOrUpdate(club);
+        String clubName = club.getClubName();
+
+        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().eq(Student::getStuIsPresident, clubName);
+        Student preStu = studentService.getOne(qw);
+
+        String stuNum = club.getClubPresident();
+        Student newStu = studentService.getByStuNum(stuNum);
+        if(newStu.getStuIsPresident() == null || newStu.getStuIsPresident().equals("")) {
+            if (preStu != null) {
+                preStu.setRole(3);
+                preStu.setStuIsPresident("");
+                studentService.saveOrUpdate(preStu);
+            }
+            newStu.setStuIsPresident(clubName);
+            newStu.setRole(2);
+            studentService.saveOrUpdate(newStu);
+            return clubService.saveOrUpdate(club);
+        }
+        else
+            return false;
     }
 
     @ApiOperation(value = "列出所有社团")

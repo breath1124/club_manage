@@ -51,6 +51,7 @@ public class StudentController {
         LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().eq(Student::getStuNum, student.getStuNum());
         if(studentService.list(qw).isEmpty()) {
             student.setStuState(0);
+            student.setRole(3);
             student.setStuPwd(new BCryptPasswordEncoder().encode(student.getStuPwd()));
             return studentService.save(student);
         }
@@ -69,6 +70,8 @@ public class StudentController {
     @ApiOperation(value = "修改学生")
     @PostMapping("/modify")
     public boolean modifyStudent(@RequestBody Student student) {
+        if (student.getStuPwd() != null)
+            student.setStuPwd(new BCryptPasswordEncoder().encode(student.getStuPwd()));
         return studentService.saveOrUpdate(student);
     }
 

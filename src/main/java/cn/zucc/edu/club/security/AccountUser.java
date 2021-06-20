@@ -18,7 +18,7 @@ public class AccountUser implements UserDetails {
 
     private String name;
 
-    private Integer age;
+    private Integer clubId;
 
     private String tel;
 
@@ -42,9 +42,9 @@ public class AccountUser implements UserDetails {
 //        this(userId, username, password, true, true, true, true, authorities);
 //    }
 
-    public AccountUser(Long userId, String username, String password, String name, Integer age, String tel,
+    public AccountUser(Long userId, String username, String password, String name, Integer clubId, String tel,
                        String president, Integer state, Integer role, Collection<? extends GrantedAuthority> authorities) {
-        this(userId, username, password, name, age, tel, president, state, role, true, true, true, true, authorities);
+        this(userId, username, password, name, clubId, tel, president, state, role, true, true, true, true, authorities);
     }
 
 
@@ -65,7 +65,7 @@ public class AccountUser implements UserDetails {
 //    }
 
 
-    public AccountUser(Long userId, String username, String password, String name, Integer age, String tel,
+    public AccountUser(Long userId, String username, String password, String name, Integer clubId, String tel,
                        String president, Integer state, Integer role, boolean enabled, boolean accountNonExpired,
                        boolean credentialsNonExpired, boolean accountNonLocked,
                        Collection<? extends GrantedAuthority> authorities) {
@@ -75,7 +75,7 @@ public class AccountUser implements UserDetails {
         this.username = username;
         this.password = password;
         this.name = name;
-        this.age = age;
+        this.clubId = clubId;
         this.tel = tel;
         this.president = president;
         this.state = state;

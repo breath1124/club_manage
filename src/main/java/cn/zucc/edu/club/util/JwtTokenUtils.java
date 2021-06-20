@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class JwtTokenUtils {
 
     //过期时间
-    private Long expire = 3600L * 24;
+    private Long expire = 3600L * 1000 * 24;
     //private long EXPIRATION = 3600L * 24;
 
     //密钥

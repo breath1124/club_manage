@@ -1,8 +1,12 @@
 package cn.zucc.edu.club.service.impl;
 
+import cn.zucc.edu.club.entity.Club;
 import cn.zucc.edu.club.entity.Student;
 import cn.zucc.edu.club.security.AccountUser;
+import cn.zucc.edu.club.service.ClubService;
 import cn.zucc.edu.club.service.StudentService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,18 +25,31 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Autowired
     private StudentService sysUserService;
 
+    @Autowired
+    private ClubService clubService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         //数据库中获取用户信息
         Student sysUser = sysUserService.getByStuNum(username);
+        String clubName = sysUser.getStuIsPresident();
+
+        int clubId = 0;
+        if(clubName == null || clubName.equals(""))
+            clubId = -1;
+        else {
+            LambdaQueryWrapper<Club> qw = new QueryWrapper<Club>().lambda().eq(Club::getClubName, clubName);
+            Club club = clubService.getOne(qw);
+            clubId = club.getClubId();
+        }
 
         if (sysUser == null)
             throw new UsernameNotFoundException("用户名或密码不正确");
 
         //参数: 用户id 用户名 用户密码 权限信息
-        return new AccountUser(sysUser.getStuId(),sysUser.getStuNum(),sysUser.getStuPwd(), sysUser.getStuName(),
-                sysUser.getStuAge(), sysUser.getStuTel(), sysUser.getStuIsPresident(), sysUser.getStuState(),
+        return new AccountUser(sysUser.getStuId(),sysUser.getStuNum(), sysUser.getStuPwd(), sysUser.getStuName(),
+                clubId, sysUser.getStuTel(), sysUser.getStuIsPresident(), sysUser.getStuState(),
                 sysUser.getRole(), null);
 //        return new AccountUser(sysUser.getStuId(),sysUser.getUsername(),sysUser.getPassword(),getUserAuthority(sysUser.getStuId()));
     }

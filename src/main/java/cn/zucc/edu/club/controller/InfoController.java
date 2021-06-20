@@ -103,6 +103,8 @@ public class InfoController {
             else
                 map.put(clubType, count);
         }
+        int sum = map.size();
+        map.put("sum", sum);
         return map;
     }
 

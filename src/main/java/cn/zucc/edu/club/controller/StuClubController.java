@@ -186,17 +186,22 @@ public class StuClubController {
 
     @ApiOperation(value = "撤销社长")
     @PostMapping("/deletePresident")
-    public boolean deletePersident(@RequestParam int clubId, @RequestBody StuClub stuClub) {
+    public boolean deletePersident(@RequestParam("clubId") int clubId, @RequestParam("stuNum") String stuNum) {
 
-        Student student = studentService.getById(stuClub.getStuId());
-        student.setStuIsPresident(null);
-        stuClub.setStatus("普通成员");
+        LambdaQueryWrapper<Student> qw = new QueryWrapper<Student>().lambda().eq(Student::getStuNum, stuNum);
+        Student student = studentService.getOne(qw);
+
+//        stuClub.setStatus("普通成员");
         Club club = clubService.getById(clubId);
-        club.setClubPresident(null);
-        student.setRole(2);
+        if(!club.getClubName().equals(student.getStuIsPresident()))
+            return false;
+
+        student.setStuIsPresident("");
+        club.setClubPresident("");
+        student.setRole(3);
         clubService.saveOrUpdate(club);
-        studentService.saveOrUpdate(student);
-        return stuClubService.saveOrUpdate(stuClub);
+        return studentService.saveOrUpdate(student);
+//        return stuClubService.saveOrUpdate(stuClub);
     }
 
 }
