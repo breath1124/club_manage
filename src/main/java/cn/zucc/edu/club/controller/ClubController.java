@@ -44,14 +44,28 @@ public class ClubController {
     @ApiOperation(value = "新增社团")
     @PostMapping("/add")
     public boolean addClub(@RequestBody Club club) throws ParseException {
+
+        String stuName = club.getClubPresident();
+
+        if (!(stuName == null) && !stuName.equals("")) {
+            LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new QueryWrapper<Student>().lambda().eq(Student::getStuName, stuName);
+            Student student = studentService.getOne(studentLambdaQueryWrapper);
+            if (student == null)
+                throw new RuntimeException();
+            if (student.getStuIsPresident() != null && !student.getStuIsPresident().equals(""))
+                throw new RuntimeException();
+        }
+
         LambdaQueryWrapper<Club> qw = new QueryWrapper<Club>().lambda().eq(Club::getClubName, club.getClubName());
         if(clubService.list(qw).isEmpty()) {
             String initTime = df.format(new Date());
             club.setClubInit(df.parse(initTime));
-            LambdaQueryWrapper<Student> queryWrapper = new QueryWrapper<Student>().lambda().eq(Student::getStuName, club.getClubPresident());
-            Student student = studentService.getOne(queryWrapper);
-            student.setStuIsPresident(club.getClubName());
-            studentService.saveOrUpdate(student);
+            if (!(club.getClubPresident() == null) && !club.getClubName().equals("")) {
+                LambdaQueryWrapper<Student> queryWrapper = new QueryWrapper<Student>().lambda().eq(Student::getStuName, club.getClubPresident());
+                Student student = studentService.getOne(queryWrapper);
+                student.setStuIsPresident(club.getClubName());
+                studentService.saveOrUpdate(student);
+            }
             return clubService.save(club);
         }
         else
@@ -75,7 +89,16 @@ public class ClubController {
         Student preStu = studentService.getOne(qw);
 
         String stuNum = club.getClubPresident();
-        Student newStu = studentService.getByStuNum(stuNum);
+
+        String stuName = club.getClubPresident();
+
+        LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new QueryWrapper<Student>().lambda().eq(Student::getStuName, stuName);
+        Student newStu = studentService.getOne(studentLambdaQueryWrapper);
+
+        if (newStu == null)
+            throw new RuntimeException();
+
+//        Student newStu = studentService.getByStuNum(stuNum);
         if(newStu.getStuIsPresident() == null || newStu.getStuIsPresident().equals("")) {
             if (preStu != null) {
                 preStu.setRole(3);
@@ -87,8 +110,11 @@ public class ClubController {
             studentService.saveOrUpdate(newStu);
             return clubService.saveOrUpdate(club);
         }
+        else if(newStu.getStuIsPresident().equals(clubName))
+            return clubService.saveOrUpdate(club);
+
         else
-            return false;
+            throw new RuntimeException();
     }
 
     @ApiOperation(value = "列出所有社团")
