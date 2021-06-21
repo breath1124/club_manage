@@ -24,6 +24,14 @@
         and apply_is_success != 1
     </select>
 
+    <select id="listAllApplyStu" resultType="cn.zucc.edu.club.entity.StuApplyClub">
+        select stu_club.club_id, stu_club.stu_id, stu_club.apply_content, stu_club.apply_time, student.stu_name
+        from stu_club, student
+        where stu_club.stu_id = student.stu_id
+        and stu_club.club_id = #{clubId}
+        and stu_club.apply_is_success != 1
+    </select>
+
     <select id="getOneStuInClub" resultType="cn.zucc.edu.club.entity.StuClub">
         select *
         from stu_club

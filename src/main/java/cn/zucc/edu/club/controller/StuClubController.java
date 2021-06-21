@@ -1,10 +1,7 @@
 package cn.zucc.edu.club.controller;
 
 
-import cn.zucc.edu.club.entity.Club;
-import cn.zucc.edu.club.entity.StuClub;
-import cn.zucc.edu.club.entity.StuInClub;
-import cn.zucc.edu.club.entity.Student;
+import cn.zucc.edu.club.entity.*;
 import cn.zucc.edu.club.service.ActivityService;
 import cn.zucc.edu.club.service.ClubService;
 import cn.zucc.edu.club.service.StuClubService;
@@ -49,9 +46,10 @@ public class StuClubController {
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 
     @ApiOperation(value = "学生申请入社")
-    @PostMapping("/apply")
+        @PostMapping("/apply")
     public boolean stuApplyClub(@RequestBody StuClub stuClub) throws ParseException {
         String applyTime = df.format(new Date());
+        stuClub.setApplyIsSuccess(0);
         stuClub.setApplyTime(df.parse(applyTime));
         return stuClubService.save(stuClub);
     }
@@ -82,12 +80,13 @@ public class StuClubController {
 
     @ApiOperation(value = "列出申请加入某社团但还未被同意的所有学生")
     @GetMapping("/listApply")
-    public PageInfo<StuClub> searchApplyStudentInClub(@RequestParam("clubId") int clubId,
+    public PageInfo<StuApplyClub> searchApplyStudentInClub(@RequestParam("clubId") int clubId,
                                                   @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
                                                   @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
 //        LambdaQueryWrapper<S>
-        PageInfo<StuClub> students = stuClubService.findStuByPageVague(clubId, pageNum, pageSize);
-        return students;
+        PageInfo<StuApplyClub> stuApplyClubPageInfo = stuClubService.findAllApplyStuByPage(clubId, pageNum, pageSize);
+//        PageInfo<StuClub> students = stuClubService.findStuByPageVague(clubId, pageNum, pageSize);
+        return stuApplyClubPageInfo;
     }
 
     @ApiOperation(value = "社长同意某学生加入社团")

@@ -51,15 +51,21 @@ public class InfoController {
     @GetMapping("/infoSum")
     @ApiOperation(value = "获取学生社团活动通知总数")
     public List<Integer> getInfoCount() {
-        PageInfo<Student> students = studentService.findStuByPage(0, 5);
-        int studentSum = students.getSize();
-        LambdaQueryWrapper<Club> qw = new QueryWrapper<Club>().lambda().ne(Club::getClubIsStop, 1);
-        List<Club> clubs = clubService.list(qw);
+        LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new QueryWrapper<Student>().lambda().eq(Student::getStuState, 0);
+        List<Student> students = studentService.list(studentLambdaQueryWrapper);
+        int studentSum = students.size();
+
+        LambdaQueryWrapper<Club> clubLambdaQueryWrapper = new QueryWrapper<Club>().lambda().ne(Club::getClubIsStop, 1);
+        List<Club> clubs = clubService.list(clubLambdaQueryWrapper);
         int clubSum = clubs.size();
-        PageInfo<Activity> activities = activityService.findStuByPage(0, 5);
-        int activitySum = activities.getSize();
-        PageInfo<Notice> notices = noticeService.findStuByPage(0, 5);
-        int noticeSum = notices.getSize();
+
+        LambdaQueryWrapper<Activity> activityLambdaQueryWrapper = new QueryWrapper<Activity>().lambda().eq(Activity::getActivityStop, 0);
+        List<Activity> activities = activityService.list(activityLambdaQueryWrapper);
+        int activitySum = activities.size();
+
+        List<Notice> notices = noticeService.list();
+        int noticeSum = notices.size();
+
         ArrayList<Integer> list = new ArrayList<>();
         list.add(studentSum);
         list.add(clubSum);
@@ -78,6 +84,8 @@ public class InfoController {
         int count = 0;
         String clubName;
         for(int i = 0; i < clubs.size(); i++) {
+            if (clubs.get(i).getClubIsStop() == 1)
+                continue;
             count = clubService.getClubMemberSum(clubs.get(i));
             clubName = clubs.get(i).getClubName();
             map.put(clubName, count);
@@ -95,6 +103,8 @@ public class InfoController {
         int count = 0;
         String clubType;
         for(int i = 0; i < clubs.size(); i++) {
+            if (clubs.get(i).getClubIsStop() == 1)
+                continue;
             count = clubService.getClubMemberSum(clubs.get(i));
             clubType = clubs.get(i).getClubType();
             if(map.containsKey(clubType)) {

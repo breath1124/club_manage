@@ -1,5 +1,6 @@
 package cn.zucc.edu.club.service.impl;
 
+import cn.zucc.edu.club.entity.StuApplyClub;
 import cn.zucc.edu.club.entity.StuClub;
 import cn.zucc.edu.club.entity.StuInClub;
 import cn.zucc.edu.club.entity.Student;
@@ -49,6 +50,11 @@ public class StuClubServiceImpl extends ServiceImpl<StuClubMapper, StuClub> impl
     }
 
     @Override
+    public List<StuApplyClub> listAllApplyStu(int clubId) {
+        return stuClubMapper.listAllApplyStu(clubId);
+    }
+
+    @Override
     public StuClub getOneStuInClub(int clubId, Long stuId) {
         return stuClubMapper.getOneStuInClub(clubId, stuId);
     }
@@ -64,6 +70,13 @@ public class StuClubServiceImpl extends ServiceImpl<StuClubMapper, StuClub> impl
     public PageInfo<StuClub> findStuByPageVague(int clubId, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<StuClub> students = stuClubService.searchApplyStu(clubId);
+        return new PageInfo<>(students);
+    }
+
+    @Override
+    public PageInfo<StuApplyClub> findAllApplyStuByPage(int clubId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<StuApplyClub> students = stuClubService.listAllApplyStu(clubId);
         return new PageInfo<>(students);
     }
 

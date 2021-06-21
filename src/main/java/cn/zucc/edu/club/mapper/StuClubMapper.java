@@ -1,5 +1,6 @@
 package cn.zucc.edu.club.mapper;
 
+import cn.zucc.edu.club.entity.StuApplyClub;
 import cn.zucc.edu.club.entity.StuClub;
 import cn.zucc.edu.club.entity.StuInClub;
 import cn.zucc.edu.club.entity.Student;
@@ -24,6 +25,8 @@ public interface StuClubMapper extends BaseMapper<StuClub> {
     int stuExitClub(int clubId, int stuId);
 
     List<StuInClub> searchAllStuInClub(int clubId);
+
+    List<StuApplyClub> listAllApplyStu(int clubId);
 
     List<StuClub> searchApplyStuClub(int clubId);
 

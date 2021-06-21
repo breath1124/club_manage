@@ -1,5 +1,6 @@
 package cn.zucc.edu.club.service;
 
+import cn.zucc.edu.club.entity.StuApplyClub;
 import cn.zucc.edu.club.entity.StuClub;
 import cn.zucc.edu.club.entity.StuInClub;
 import cn.zucc.edu.club.entity.Student;
@@ -25,10 +26,14 @@ public interface StuClubService extends IService<StuClub> {
 
     List<StuClub> searchApplyStu(int clubId);
 
+    List<StuApplyClub> listAllApplyStu(int clubId);
+
     StuClub getOneStuInClub(int clubId, Long stuId);
 
     PageInfo<StuInClub> findStuByPage(int clubId, int pageNum, int pageSize);
 
     PageInfo<StuClub> findStuByPageVague(int clubId, int pageNum, int pageSize);
+
+    PageInfo<StuApplyClub> findAllApplyStuByPage(int clubId, int pageNum, int pageSize);
 
 }
